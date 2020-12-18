@@ -1,63 +1,135 @@
 <html>
-<head>
-    <title>New Project</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
-    <!--nav-->
-    <nav>
-        <ul>
-    <li> <a href ="index.html" target="_blank" >Home</a></li>
-    <li><a href="studentlist.html" target="_blank" class="active">studentlist</a></li>
-    <li> <a href ="newstudent.html" target="_blank">new student</a> </li>
-    <li class="nav-right"><a href="#" target="_blank">Logout</a></li>
-    </ul>
- </nav>
+    <head><title></title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+      <script>
+        //  var dataSource = [["20132627","Yousef Samir Allam", "Faculty of Computers and Information Technology","20132627.png"],
+        //                    ["20190000","xyz","Faculty 2","20190000.png"],
+        //                    ["20181877","Abdalla Ahmed Elsayed Ahmed", "Faculty of Computers and Information Technology","20181877.png"] ];
+
+                          // document.writeln("<h1>Heading</h1>");
+      </script>
+    </head>
+
+    <body onload="init();">
+        <nav>
+            <ul>
+                <li ><a href="index.html"  >Home</a></li>
+                <li ><a href="studentlist.html"class="active" >Students List</a></li>
+                <li ><a href="new_student.html" >New Student</a></li>
+        
+                <li class="nav-right"><a href="sign.html">Logout</a></li>
+            </ul>
+        
+        
+        <nav>
+<hr/>
+<section>
+
+    <div class="searchbar">              
+        <div class="searchicon">
+            <svg  focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+           </div>
+        
+        <input type="search" class="searchbox" id="txtSearch" oninput="mySearch()">
+      
+        <div class="searchicon" onclick="listen();">  <i class="material-icons">mic</i></div>
+    </div>
+
     
-    <!--#nav-->
-    <hr> 
-    <!--Sec-->
-   <table border="1">
-   <thead>
-       <tr>
-           <td>ID</d>
-            <td>Name</td>
-            <td>Faculty</td>
-            <td>image</td>
+    
+    <div id="myTable"></div>
 
-       </tr>
-   </thead>
-   <tbody>
-       <tr>
-           <td colspan="2">
-               20131401 Ali
-           </td>
-           <td>FCIT</td>
-           <td><img src="User_icon.png" alt="Usericon" width="30px" height="30px"></td>          
-       </tr>
-       <tr>
-        <td colspan="2">
-            20151623 Yara
-        </td>
-        <td>FCIT</td>
-        <td><img src="User_icon.png" alt="Usericon" width="30px" height="30px"></td> 
-       </tr>
-   </tbody>
-   <tfoot>
-       <tr>
-           <td colspan="4">Total number of student =2 </td>
-       </tr>
-   </tfoot>
 
-   </table>
-    <!--#sec-->
-    <hr>
-    <!--footer-->
-    Copyright&copy;<a href="https://services.fue.edu.eg/" target="-blank">Future University In Egypt</a>&nbsp;&mdash;
-    <a href="mailto:20193844@fue.edu.eg"target="_blank">Contact Us</a>
+</section>
+<hr/>
+<!--footer-->
+<a href ="http://www.fue.edu.eg" target="_blank">&copy; Future University in Egypt</a>&nbsp;&nbsp;&mdash;&nbsp;&nbsp;
+<a href="mailto:20132627@fue.edu.eg">contact us</a>
+<!--#footer-->
 
-</body>
-<footer>
+<script>
+        var dataSource;
+    
+        function init()
+        {
+            dataSource = [];
+            loadJSON();
+       
+        }
 
-</footer>
-</html>
+        function mySearch()
+        {
+         var input = document.getElementById('txtSearch').value;
+     //    console.log(input);
+         searchAlgorithm(input,dataSource);
+
+
+        }
+
+        function searchAlgorithm(input,data)
+        {
+            var flat = [].concat.apply([],data);
+            var col = flat.indexOf(input);
+            var row = -1;
+            if(col != -1)
+            {
+               while(data[++row].length <= col)
+               {
+                   col -= data[row].length;
+               } 
+               var tempDataSource = [];
+               tempDataSource.push(data[row]);
+               drawResultTable(tempDataSource);
+               
+            }else
+            {
+                init();
+            }
+        }
+        
+        function drawResultTable(data)
+            {
+                
+                var table ="";
+
+table  += "<table border='1'>" +
+          "<thead>"+
+          "<tr>"+
+            "  <td>ID</td>"+
+            " <td>Name</td>"+
+            " <td>Faculty</td>"+
+            " <td>Image</td>"+
+            "</tr>"+
+           "</thead>"+
+           "<tbody>";
+           //table body
+           var counter= 0;
+           for (var i= 0;i <data.length; i++)
+           {
+               var studentId = data[i][0];
+               var studentName= data[i][1];
+               var studentFaculty = data[i][2];
+               var studentImagePath = data[i][3];
+
+            table+= "<tr>";
+            table+= "<td>"+studentId+"</td>";
+            table+= "<td>"+studentName+"</td>";
+            table+= "<td>"+studentFaculty+"</td>";
+            table+= "<td><img src='images\\"+studentImagePath+"' width='60px' height='60px' alt='image of" +studentName+ "' ></td>";                 
+            table+="</tr>";      
+            
+            counter++;
+           }
+           mytable+='</tbody';
+           mytable+='<tfoot><tr><td colspan="4">Total no. of students:'+count+'</td></tr></tfoot></table>';
+           document.getElementById("mytable").innerHTML= mytable;
+            }
+        </script>
+        </body>
+        <footer>
+            Copyright &copy; <a href="https://fue.edu.eg/" target="_blank>" Future University in Egypt</a> &nbsp;&mdash;&nbsp;
+            <a href="mailto:abs@gmail.com" target="_blank>Contact Us </a>"
+        </footer>
+        </html>
